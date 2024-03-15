@@ -212,6 +212,11 @@ void loop() {
             expectedMsgId = POLL_ACK;
             float curRange;
             memcpy(&curRange, data + 1, 4);
+            Serial.print("id: ");
+            Serial.println(level);
+            Serial.print("dist: ");
+            Serial.print(curRange);
+            Serial.println(" m");
             SwitchContext();
             transmitPoll();
             noteActivity();

@@ -263,7 +263,7 @@ void loop() {
                 timeRangeSent.setTimestamp(data + 11);
                 // (re-)compute range as two-way ranging is done
                 computeRangeAsymmetric(); // CHOSEN RANGING ALGORITHM
-                transmitRangeReport(timeComputedRange.getAsMicroSeconds());
+                transmitRangeReport(timeComputedRange.getAsMeters());
                 float distance = timeComputedRange.getAsMeters();
                 Serial.print("Range: "); Serial.print(distance); Serial.print(" m");
                 Serial.print("\t RX power: "); Serial.print(DW1000.getReceivePower()); Serial.print(" dBm");

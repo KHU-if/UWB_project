@@ -21,17 +21,17 @@ void SendData() {
   client.println("HTTP/1.1 200 OK");
   client.println("Content-Type: text/html");
   client.println("Connection: close");
-  clinet.println();
+  client.println();
 
   client.println(data);
 }
 
-void ListenWifi() {
+void ListenWifi(void * params) {
   while(true) {
   client = server.available();
   if(!client)
   {
-    return;
+    continue;
   }
 
   while (client.connected())
@@ -43,7 +43,7 @@ void ListenWifi() {
 
       if (c == '\n')
       {
-        sendData();
+        SendData();
         break;
       }
     }

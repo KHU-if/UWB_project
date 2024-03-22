@@ -36,7 +36,7 @@ def makep(mx, Mx, my, My, mz, Mz):
     dx = Mx - mx
     dy = My - my
     dz = Mz - mz
-    return (mx + random.random() * dx, my + random.random() * dy, my + random.random() * dy)
+    return (mx + random.random() * dx, my + random.random() * dy, mz + random.random() * dz)
 
 for i in range(10):
     print(makep(10, 30, 10, 30, 0, 10))

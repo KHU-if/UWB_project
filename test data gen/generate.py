@@ -18,6 +18,7 @@ def noise(d):
     """
     apply error
     """
+    d += 0.6 + random.random() * 0.2
     return d
 
 def alldist(p):
@@ -45,3 +46,5 @@ def evaluate(calcfunc):
     print("rp", rp)
     print("ep", ep)
     print("diff", dist(rp, ep))
+
+# call evaluate function with made point calc function

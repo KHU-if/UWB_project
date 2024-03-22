@@ -38,5 +38,10 @@ def makep(mx, Mx, my, My, mz, Mz):
     dz = Mz - mz
     return (mx + random.random() * dx, my + random.random() * dy, mz + random.random() * dz)
 
-for i in range(10):
-    print(makep(10, 30, 10, 30, 0, 10))
+def evaluate(calcfunc):
+    rp = makep(10, 30, 10, 30, 0, 10)
+    dists = alldist(p)
+    ep = calcfunc(dists[0], dists[1], dists[2])
+    print("rp", rp)
+    print("ep", ep)
+    print("diff", dist(rp, ep))

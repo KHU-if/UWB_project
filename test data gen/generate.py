@@ -1,9 +1,9 @@
 import random
 
 # basic params
-anc1 = [0,4]
-anc2 = [-8,-4]
-anc3 = [8,-4]
+anc1 = [0,0.16]
+anc2 = [0.16,0]
+anc3 = [-0.16,0]
 
 def dist(p1, p2):
     """
@@ -50,6 +50,31 @@ def evaluate(calcfunc):
 
 import main
 
+data = [
+    [3.6, 3.6, 3.72],
+    [4.11, 4.15, 4.05],
+    [2.8, 2.57, 2.61],
+    [2.44, 2.43, 2.71],
+    [2.45, 2.77, 2.25],
+    [3.65, 4.58, 3.43],
+    [3.55, 3.79, 3.65],
+    [3.77, 4.11, 3.57]
+]
+
+for d in data:
+    print(d)
+    cnt = 0
+    res = None
+    while res == None and cnt < 10:
+        try:
+            res = main.main(anc1, anc2, anc3, d[0] - 0.8, d[1] - 0.8, d[2] - 0.8)
+        except:
+            pass
+        cnt += 1
+    print(res)
+    
+
+"""
 user = makep(10, 50, 10, 50)
 
 print(user)
@@ -69,3 +94,4 @@ while data == None and cnt < 10:
         pass
     cnt += 1
 print(data)
+"""

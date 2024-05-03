@@ -218,8 +218,8 @@ void handleReceived() {
 }
 
 void transmitPoll() {
-    Serial.print("Transmit poll " );
-    Serial.println(level);
+    //Serial.print("Transmit poll " );
+    //Serial.println(level);
     DW1000.newTransmit();
     DW1000.setDefaults();
     data[0] = POLL << 2;
@@ -229,8 +229,8 @@ void transmitPoll() {
 }
 
 void transmitRange() {
-    Serial.print("Transmit range " );
-    Serial.println(level);
+    //Serial.print("Transmit range " );
+    //Serial.println(level);
     DW1000.newTransmit();
     DW1000.setDefaults();
     data[0] = RANGE << 2;
@@ -306,20 +306,20 @@ void loop() {
             float curRange;
             memcpy(&curRange, data + 1, 4);
             Serial.print("id: ");
-            Serial.println(level);
-            Serial.print("dist: ");
+            Serial.print(level);
+            Serial.print(" dist: ");
             Serial.print(curRange);
             Serial.println(" m");
             
             // send wifi test
-            if (id == 1) {
+            if (level == 1) {
                 data1 = curRange;
             }
-            else if (id == 2) {
+            else if (level == 2) {
                 data2 = curRange;
             }
-            else if (id == 3) {
-                data2 = curRange;
+            else if (level == 3) {
+                data3 = curRange;
             }
 
             SwitchContext();

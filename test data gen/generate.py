@@ -1,9 +1,11 @@
 import random
 
+
+
 # basic params
-anc1 = [0,0.16]
-anc2 = [0.16,0]
-anc3 = [-0.16,0]
+anc1 = [0,0.17]
+anc2 = [-0.17,0]
+anc3 = [0.17,0]
 
 def dist(p1, p2):
     """
@@ -50,6 +52,7 @@ def evaluate(calcfunc):
 
 import main
 
+"""
 data = [
     [3.6, 3.6, 3.72],
     [4.11, 4.15, 4.05],
@@ -72,7 +75,7 @@ for d in data:
             pass
         cnt += 1
     print(res)
-    
+"""
 
 """
 user = makep(10, 50, 10, 50)
@@ -95,3 +98,28 @@ while data == None and cnt < 10:
     cnt += 1
 print(data)
 """
+
+import requests
+import time
+
+while True:
+    time.sleep(1)
+    r = requests.get('http://192.168.0.8/')
+    if r.status_code != 200:
+        print('fail request')
+        continue
+    data = r.text
+    print('raw data', data)
+    data = data.split('/')
+    data = list(map(float, data))
+    print(data)
+    cnt = 0
+    res = None
+    while res == None and cnt < 10:
+        try:
+            res = main.main(anc1, anc2, anc3, d[0], d[1], d[2])
+        except:
+            pass
+        cnt += 1
+    print(res)
+    print()

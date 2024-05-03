@@ -102,6 +102,11 @@ print(data)
 import requests
 import time
 
+d1 = [0, 0, 0, 0, 0]
+d2 = [0, 0, 0, 0, 0]
+d3 = [0, 0, 0, 0, 0]
+p = 0
+
 while True:
     time.sleep(1)
     r = requests.get('http://192.168.0.8/')
@@ -113,13 +118,20 @@ while True:
     data = data.split('/')
     data = list(map(float, data))
     print(data)
+    d1[p] = data[0]
+    d2[p] = data[1]
+    d3[p] = data[2]
+
     cnt = 0
     res = None
     while res == None and cnt < 10:
         try:
-            res = main.main(anc1, anc2, anc3, d[0], d[1], d[2])
+            res = main.main(anc1, anc2, anc3, data[0] - 0.79, data[1] - 0.79, data[2] - 0.79)
         except:
             pass
         cnt += 1
     print(res)
     print()
+
+    p += 1
+    p %= 5

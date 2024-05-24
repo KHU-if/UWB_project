@@ -65,13 +65,13 @@ DW1000Time timeRangeSent;
 byte data[LEN_DATA];
 // watchdog and reset period
 uint32_t lastActivity;
-uint32_t resetPeriod = 250;
+uint32_t resetPeriod = 10;
 // reply times (same on both sides for symm. ranging)
 uint16_t replyDelayTimeUS = 3000;
 
 // Wifi stuffs
 const char* ssid = "*SSID*";        /*Enter Your SSID*/
-const char* password = "Password";  /*Enter Your Password*/
+const char* password = "*PW*";  /*Enter Your Password*/
 
 WiFiServer server(80); /* Instance of WiFiServer with port number 80 */
 String request;
@@ -84,18 +84,42 @@ float data1 = 0;
 float data2 = 0;
 float data3 = 0;
 
+#define M_DATA_COUNT 50
+int indices[3];
+float data_circle[M_DATA_COUNT][3];
+
 void SendData() {
   client.println("HTTP/1.1 200 OK");
   client.println("Content-Type: text/html");
   client.println("Connection: close");
   client.println();
 
+  client.print(indices[0]);
+  client.print("/");
+  client.print(indices[0]);
+  client.print("/");
+  client.print(indices[0]);
+  client.print("<br>");
+
+  for (int i = 0; i < M_DATA_COUNT; i++) {
+    client.print(i);
+    client.print(":");
+    client.print(data_circle[i][0]);
+    client.print("/");
+    client.print(data_circle[i][1]);
+    client.print("/");
+    client.print(data_circle[i][2]);
+    client.print("<br>");
+  }
+
+  /*
   client.print(data1);
   client.print("/");
   client.print(data2);
   client.print("/");
   client.print(data3);
   client.print("\0");
+  */
 }
 
 void ListenWifi(void * params) {
@@ -124,6 +148,7 @@ void ListenWifi(void * params) {
   delay(1);
   request="";
   client.stop();
+  delay(200);
   }
 }
 
@@ -162,6 +187,9 @@ void setup() {
 
     // wifi server set
     SetWifi();
+
+    // data set
+    indices[0] = indices[1] = indices[2] = 0;
 
     Serial.println(F("### DW1000-arduino-ranging-tag ###"));
     // initialize the driver
@@ -255,7 +283,7 @@ void receiver() {
 }
 
 void SwitchContext() {
-    delay(200);
+    delay(10);
     if (level == levels) {
         level = 1;
     }
@@ -268,6 +296,7 @@ void loop() {
     if (!sentAck && !receivedAck) {
         // check if inactive
         if (millis() - lastActivity > resetPeriod) {
+            // Serial.println("reset");
             resetInactive();
         }
         return;
@@ -305,11 +334,23 @@ void loop() {
             expectedMsgId = POLL_ACK;
             float curRange;
             memcpy(&curRange, data + 1, 4);
-            Serial.print("id: ");
-            Serial.print(level);
-            Serial.print(" dist: ");
-            Serial.print(curRange);
-            Serial.println(" m");
+            //Serial.print("id: ");
+            //Serial.print(level);
+            //Serial.print(" dist: ");
+            //Serial.print(curRange);
+            //Serial.println(" m");
+
+            /*
+            Serial.print(data1);
+            Serial.print("/");
+            Serial.print(data2);
+            Serial.print("/");
+            Serial.print(data3);
+            Serial.println();
+            */
+
+            data_circle[indices[level - 1]++][level - 1] = curRange;
+            if (indices[level - 1] == M_DATA_COUNT) indices[level - 1] = 0;
             
             // send wifi test
             if (level == 1) {

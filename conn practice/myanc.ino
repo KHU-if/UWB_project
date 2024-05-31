@@ -75,7 +75,7 @@ uint16_t successRangingCount = 0;
 uint32_t rangingCountPeriod = 0;
 float samplingRate = 0;
 
-#define AnchorNo  2
+#define AnchorNo  1
 
 void setup() {
     // DEBUG monitoring
@@ -217,6 +217,7 @@ void loop() {
     if (!sentAck && !receivedAck) {
       //Serial.println("NO OK.");
         // check if inactive
+        delay(1);
         if (curMillis - lastActivity > resetPeriod) {
             resetInactive();
         }

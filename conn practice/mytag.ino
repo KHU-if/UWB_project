@@ -70,8 +70,8 @@ uint32_t resetPeriod = 10;
 uint16_t replyDelayTimeUS = 3000;
 
 // Wifi stuffs
-const char* ssid = "*SSID*";        /*Enter Your SSID*/
-const char* password = "*PW*";  /*Enter Your Password*/
+const char* ssid = "/*Enter Your SSID*/";        /*Enter Your SSID*/
+const char* password = "/*Enter Your Password*/";  /*Enter Your Password*/
 
 WiFiServer server(80); /* Instance of WiFiServer with port number 80 */
 String request;
@@ -99,7 +99,7 @@ void SendData() {
   client.print(indices[0]);
   client.print("/");
   client.print(indices[0]);
-  client.print("<br>");
+  client.print("<br>\n");
 
   for (int i = 0; i < M_DATA_COUNT; i++) {
     client.print(i);
@@ -109,7 +109,7 @@ void SendData() {
     client.print(data_circle[i][1]);
     client.print("/");
     client.print(data_circle[i][2]);
-    client.print("<br>");
+    client.print("<br>\n");
   }
 
   /*
@@ -123,10 +123,14 @@ void SendData() {
 }
 
 void ListenWifi(void * params) {
+  Serial.print("wifi core ");
+  Serial.println(xPortGetCoreID());
+
   while(true) {
   client = server.available();
   if(!client)
   {
+    delay(1);
     continue;
   }
 
@@ -178,7 +182,7 @@ void SetWifi() {
   NULL,              // 태스크 파라미터
   1,                 // 태스크 우선순위
   &wifiTask,            // 태스크 핸들
-  1);                // 실행될 코어
+  0);                // 실행될 코어
 }
 
 void setup() {
@@ -293,7 +297,9 @@ void SwitchContext() {
 }
 
 void loop() {
+    //Serial.println(level);
     if (!sentAck && !receivedAck) {
+        delay(1);
         // check if inactive
         if (millis() - lastActivity > resetPeriod) {
             // Serial.println("reset");
